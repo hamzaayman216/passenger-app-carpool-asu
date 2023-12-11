@@ -30,15 +30,11 @@ class CarPool extends StatelessWidget {
           bodyText2: TextStyle(color: Colors.black54),
         ),
       ),
-      initialRoute: WelcomeScreen.id,
+      initialRoute: PassengerLoginScreen.id,
       routes:{
-        WelcomeScreen.id:(context)=> WelcomeScreen(),
         PassengerLoginScreen.id:(context)=>PassengerLoginScreen(),
         PassengerRegistrationScreen.id:(context)=> PassengerRegistrationScreen(),
         PassengerScreen.id:(context)=>PassengerScreen(),
-        DriverScreen.id:(context)=>DriverScreen(),
-        DriverLoginScreen.id:(context)=>DriverLoginScreen(),
-        DriverRegistrationScreen.id:(context)=>DriverRegistrationScreen(),
         CartScreen.id:(context)=>CartScreen(),
       } ,
     );
