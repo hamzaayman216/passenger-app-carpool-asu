@@ -1,14 +1,11 @@
 import 'dart:async';
-
 import 'package:carpool/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:carpool/models/ride.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fbAuth;
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:carpool/models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-//final _firestore = FirebaseFirestore.instance;
 late fbAuth.User loggedInUser;
 
 class PaymentScreen extends StatefulWidget {
@@ -35,10 +32,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
       String userId = user.uid;
       String rideId = widget.ride.id;
 
-      // Reference to the 'paidStatus' node
       DatabaseReference paidStatusRef = FirebaseDatabase.instance.ref('paidStatus');
 
-      // Query the 'paidStatus' node for the specific payment status
       Query query = paidStatusRef
           .orderByChild('userId')
           .equalTo(userId)

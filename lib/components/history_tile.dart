@@ -1,8 +1,6 @@
 import 'package:carpool/constants.dart';
 import 'package:carpool/models/user.dart'; // Ensure this path is correct for your CarPoolUser model
 import 'package:carpool/screens/chat_history_screen.dart';
-import 'package:carpool/screens/delete_ride_screen.dart';
-import 'package:carpool/screens/driver_chat_screen.dart';
 import 'package:carpool/screens/show_passengers_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:carpool/models/ride.dart';

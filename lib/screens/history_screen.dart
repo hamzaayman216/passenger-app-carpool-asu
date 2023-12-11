@@ -1,15 +1,10 @@
-import 'package:carpool/components/driver_history_list.dart';
 import 'package:carpool/components/history_list.dart';
 import 'package:carpool/constants.dart';
 import 'package:carpool/models/ride.dart';
 import 'package:carpool/models/user.dart';
-import 'package:carpool/components/driver_rides_list.dart';
-import 'package:carpool/screens/add_ride_screen.dart';
-import 'package:carpool/screens/driver_profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 late User loggedInUser;
 
