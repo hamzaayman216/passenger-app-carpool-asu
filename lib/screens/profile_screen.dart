@@ -33,16 +33,16 @@ class ProfileScreen extends StatelessWidget {
                 color: Colors
                     .lightBlueAccent, // Set light blue accent background for the header
               ),
-        otherAccountsPictures: <Widget>[
-          Text(
-            '\$${user.balance.toString()}',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 13.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],),
+              otherAccountsPictures: <Widget>[
+                Text(
+                  '\$${user.balance.toString()}',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],),
             ListTile(
               leading: Icon(
                 Icons.person,

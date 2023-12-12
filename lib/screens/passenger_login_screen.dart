@@ -52,7 +52,7 @@ class _PassengerLoginScreenState extends State<PassengerLoginScreen> {
                   email = value;
                 },
                 decoration:
-                    kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
+                kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
               ),
               SizedBox(
                 height: 8.0,

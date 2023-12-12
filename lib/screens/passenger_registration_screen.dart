@@ -69,7 +69,7 @@ class _PassengerRegistrationScreenState
                   email = value;
                 },
                 decoration:
-                    kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
+                kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
               ),
               SizedBox(
                 height: 8.0,
@@ -83,7 +83,7 @@ class _PassengerRegistrationScreenState
                   name = value;
                 },
                 decoration:
-                    kTextFieldDecoration.copyWith(hintText: 'Enter your name'),
+                kTextFieldDecoration.copyWith(hintText: 'Enter your name'),
               ),
               SizedBox(
                 height: 8.0,
@@ -154,12 +154,12 @@ class _PassengerRegistrationScreenState
                 });
                 try {
                   final UserCredential newUser =
-                      await _auth.createUserWithEmailAndPassword(
-                          email: email, password: password);
+                  await _auth.createUserWithEmailAndPassword(
+                      email: email, password: password);
                   if (newUser.user != null) {
                     // Reference to the Realtime Database
                     DatabaseReference usersRef =
-                        FirebaseDatabase.instance.ref("users");
+                    FirebaseDatabase.instance.ref("users");
 
                     // Set the user data in Realtime Database
                     await usersRef.child(newUser.user!.uid).set({
@@ -175,7 +175,7 @@ class _PassengerRegistrationScreenState
                       email: email,
                       phoneNumber: phoneNumber,
                       profilePhotoUrl:
-                          '', // Assuming an empty string if no URL is available
+                      '', // Assuming an empty string if no URL is available
                     );
 
                     Navigator.pushNamed(context, PassengerScreen.id);
