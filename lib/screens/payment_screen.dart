@@ -156,6 +156,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       return;
                     }
                     if (!widget.ride.confirmed) {
+                      Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Center(
