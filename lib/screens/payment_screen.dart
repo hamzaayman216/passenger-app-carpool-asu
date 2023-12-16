@@ -134,7 +134,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   Text('Card',style: TextStyle(color: kSecondaryColor),),
                 ],
               ),
-              Center( // Wrap IconButton with Center widget
+              Center(
                 child: TextButton(
                   child: Text('Checkout',style: TextStyle(
                     color: Colors.white,

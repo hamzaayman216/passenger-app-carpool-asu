@@ -19,7 +19,7 @@ class CarPoolUser {
 
   factory CarPoolUser.fromMap(Map<String, dynamic> map) {
     return CarPoolUser(
-      name: map['name'] ?? '', // Provide a default value in case the key doesn't exist
+      name: map['name'] ?? '',
       email: map['email'] ?? '',
       phoneNumber: map['phoneNumber'] ?? '',
       imageUrl: map['imageUrl'] ?? '',

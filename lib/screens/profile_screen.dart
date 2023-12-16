@@ -30,8 +30,7 @@ class ProfileScreen extends StatelessWidget {
                     : NetworkImage(user.imageUrl) as ImageProvider,
               ),
               decoration: BoxDecoration(
-                color: Colors
-                    .lightBlueAccent, // Set light blue accent background for the header
+                color: kMainColor,
               ),
               otherAccountsPictures: <Widget>[
                 Text(

@@ -1,10 +1,9 @@
 import 'dart:async';
-
 import 'package:carpool/models/chat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 class Ride {
-  final String driverId; // Changed to driverId of type String
+  final String driverId;
   final String startPoint;
   final String endPoint;
   final String date;
@@ -18,7 +17,7 @@ class Ride {
   final String status;
 
   Ride({
-    required this.driverId, // Updated
+    required this.driverId,
     required this.time,
     required this.date,
     required this.endPoint,
@@ -52,7 +51,7 @@ class Ride {
 
   Map<String, dynamic> toMap() {
     return {
-      'driverId': driverId, // Updated
+      'driverId': driverId,
       'confirmed': confirmed,
       'id': id,
       'time': time,

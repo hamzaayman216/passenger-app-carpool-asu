@@ -27,13 +27,12 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _sendMessage() {
-    // Update this method to send messages to the chat specific to the ride
     messageText = messageTextController.text.trim();
     if (messageText.isNotEmpty) {
       _database.child('rides/${widget.rideId}/chat').push().set({
         'text': messageText,
         'sender': widget.loggedInUser.email,
-        'timestamp': ServerValue.timestamp, // Add this line to include the timestamp
+        'timestamp': ServerValue.timestamp,
       });
       messageTextController.clear();
     }

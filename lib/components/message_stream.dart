@@ -55,7 +55,7 @@ class MessagesStream extends StatelessWidget {
 
           return Expanded(
             child: ListView(
-              reverse: false, // This reverses the order of items so the latest messages are at the bottom
+              reverse: false,
               padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
               children: messageBubbles,
             ),

@@ -114,8 +114,6 @@ class _PassengerLoginScreenState extends State<PassengerLoginScreen> {
                       password = '';
                     });
                   } else {
-                    print(e);
-                    // Or handle other exceptions
                   }
                 }
               }),

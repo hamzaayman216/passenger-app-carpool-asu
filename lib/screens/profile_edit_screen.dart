@@ -62,14 +62,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     try {
       String imageUrl = '';
       if (_selectedImage != null) {
-        // Upload image to Firebase Storage
         String fileName = 'profile_images/${DateTime.now().millisecondsSinceEpoch}_${_selectedImage!.path.split('/').last}';
         UploadTask uploadTask = storage.ref(fileName).putFile(_selectedImage!);
         TaskSnapshot snapshot = await uploadTask;
         imageUrl = await snapshot.ref.getDownloadURL();
       }
 
-      // Query the 'users' node for the specific user
       Query query = usersRef.orderByChild('email').equalTo(userEmail);
       DatabaseEvent event = await query.once();
 
@@ -77,7 +75,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         Map<dynamic, dynamic> data = event.snapshot.value as Map<dynamic, dynamic>;
         String userId = data.keys.first;
 
-        // Update the user data with new image URL
         Map<String, Object> updates = {
           'name': updatedName,
           'phoneNumber': updatedPhoneNumber,
@@ -87,9 +84,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         }
         await usersRef.child(userId).update(updates);
 
-        // Update the same user data in SQLite database
         await _databaseManager.updateUserProfile(
-          id: userId, // Adjust this to use the correct identifier
+          id: userId,
           name: updatedName,
           phoneNumber: updatedPhoneNumber,
           profilePhotoUrl: imageUrl,
@@ -97,10 +93,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
         Navigator.pushNamed(context, PassengerScreen.id);
       } else {
-        print('No user found with this email');
       }
     } catch (e) {
-      print('Error updating user: $e');
     }
   }
 
@@ -138,7 +132,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         padding: EdgeInsets.all(16.0),
         children: <Widget>[
           GestureDetector(
-            onTap: _pickImage, // Call the image picking function when tapped
+            onTap: _pickImage,
             child: CircleAvatar(
               radius: 200,
               backgroundColor: Colors.white,

@@ -2,7 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:carpool/constants.dart';
 import 'package:carpool/models/ride.dart';
-import 'package:carpool/components/cart_list.dart'; // Import CartList
+import 'package:carpool/components/cart_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class CartScreen extends StatefulWidget {
@@ -14,7 +14,7 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
 
-  final FirebaseAuth _auth = FirebaseAuth.instance; // Assuming FirebaseAuth is used for user authentication
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   late Stream<List<Ride>> filteredRidesStream;
 
   @override
@@ -53,7 +53,7 @@ class _CartScreenState extends State<CartScreen> {
         iconTheme: IconThemeData(color: kSecondaryColor),
       ),
       body: SafeArea(
-        child: CartList(cartListStream: filteredRidesStream), // Use CartList with the filtered rides stream
+        child: CartList(cartListStream: filteredRidesStream),
       ),
     );
   }

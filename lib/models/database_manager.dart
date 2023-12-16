@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -8,12 +7,10 @@ class DatabaseManager {
     final databasesPath = await getDatabasesPath();
     final path = join(databasesPath, 'your_database.db');
 
-    // Open the database (or create if it doesn't exist)
     _database = await openDatabase(
       path,
       version: 1,
       onCreate: (db, version) async {
-        // Modify the CREATE TABLE statement with id as TEXT
         await db.execute('''
           CREATE TABLE user_profile (
             id TEXT PRIMARY KEY,
@@ -77,7 +74,7 @@ class DatabaseManager {
       'user_profile',
       {'profilePhotoUrl': newProfilePhotoUrl},
       where: 'id = ?',
-      whereArgs: [1], // Assuming there's only one user profile
+      whereArgs: [1],
     );
   }
 

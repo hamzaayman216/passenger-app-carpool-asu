@@ -2,13 +2,13 @@ class ChatMessage {
   String messageId;
   String senderId;
   String text;
-  int timestamp; // Unix timestamp
+  int timestamp;
 
   ChatMessage({
     required this.messageId,
     required this.senderId,
     required this.text,
-    required this.timestamp, // Add timestamp to the constructor
+    required this.timestamp,
   });
 
   factory ChatMessage.fromMap(Map<String, dynamic> map, String messageId) {
@@ -16,7 +16,7 @@ class ChatMessage {
       messageId: messageId,
       senderId: map['senderId'],
       text: map['text'],
-      timestamp: map['timestamp'] ?? DateTime.now().millisecondsSinceEpoch, // Add a default value if timestamp is missing
+      timestamp: map['timestamp'] ?? DateTime.now().millisecondsSinceEpoch,
     );
   }
 
@@ -24,7 +24,7 @@ class ChatMessage {
     return {
       'senderId': senderId,
       'text': text,
-      'timestamp': timestamp, // Add timestamp to the map
+      'timestamp': timestamp,
     };
   }
 }

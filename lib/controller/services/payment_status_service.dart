@@ -10,7 +10,7 @@ class PaymentStatusService {
       DataSnapshot userSnapshot = await userQuery.get();
       if (userSnapshot.exists) {
         Map<dynamic, dynamic> userData = userSnapshot.value as Map<dynamic, dynamic>;
-        userId = userData.keys.first; // Assuming email is unique and we get one result
+        userId = userData.keys.first;
       }
       DatabaseReference paidStatusRef = FirebaseDatabase.instance.ref('paidStatus');
       Query paidStatusQuery = paidStatusRef.orderByChild('userId').equalTo(userId);

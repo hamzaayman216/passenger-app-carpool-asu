@@ -18,9 +18,9 @@ class RideTile extends StatefulWidget {
 class _RideTileState extends State<RideTile> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late bool isAdded = false;
-  IconData buttonIcon = Icons.add; // Default icon
+  IconData buttonIcon = Icons.add;
   bool userHasPaid = false;
-  String driverImageUrl = 'default_image_url'; // Placeholder URL
+  String driverImageUrl = '';
   String driverName = '';
   String driverPhoneNumber = '';
 
@@ -42,7 +42,7 @@ class _RideTileState extends State<RideTile> {
           Map<String, dynamic>.from(event.snapshot.value as Map);
       setState(() {
         driverImageUrl = userData['imageUrl'] ??
-            ''; // Update with actual default URL if needed
+            '';
         driverName = userData['name'] ?? 'Unknown';
         driverPhoneNumber = userData['phoneNumber'] ?? 'N/A';
       });
@@ -67,7 +67,7 @@ class _RideTileState extends State<RideTile> {
 
     setState(() {
       isAdded = userFound;
-      buttonIcon = isAdded ? Icons.close : Icons.add; // Update the button icon
+      buttonIcon = isAdded ? Icons.close : Icons.add;
     });
   }
 
@@ -288,10 +288,9 @@ class _RideTileState extends State<RideTile> {
         passengerIds.add(loggedInUser.uid);
       }
 
-      isAdded = !isAdded; // Toggle the state
-      buttonIcon = isAdded ? Icons.close : Icons.add; // Update the icon
+      isAdded = !isAdded;
+      buttonIcon = isAdded ? Icons.close : Icons.add;
 
-      // Update in Firebase
       DatabaseReference ridesRef = FirebaseDatabase.instance.ref('rides');
       ridesRef.child(widget.ride.id).update({'passengerIds': passengerIds});
     });

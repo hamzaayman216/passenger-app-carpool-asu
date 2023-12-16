@@ -75,7 +75,6 @@ class _RideListState extends State<RideList> {
               setState(() => searchEndPoint = value);
             },
           ),
-          // Additional UI for preferences can be added here
         ],
       ),
     );

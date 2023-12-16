@@ -20,9 +20,9 @@ class CartTile extends StatefulWidget {
 class _CartTileState extends State<CartTile> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late bool isAdded = false;
-  IconData buttonIcon = Icons.add; // Default icon
+  IconData buttonIcon = Icons.add;
   bool userHasPaid = false;
-  String driverImageUrl = ''; // Placeholder URL
+  String driverImageUrl = '';
   String driverName = '';
   String driverPhoneNumber = '';
 
@@ -66,7 +66,7 @@ class _CartTileState extends State<CartTile> {
 
     setState(() {
       isAdded = userFound;
-      buttonIcon = isAdded ? Icons.close : Icons.add; // Update the button icon
+      buttonIcon = isAdded ? Icons.close : Icons.add;
     });
   }
 
@@ -119,7 +119,6 @@ class _CartTileState extends State<CartTile> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Add other ride details you want to display
             Text(
               'From: ${widget.ride.startPoint}',
               style: TextStyle(
@@ -200,7 +199,6 @@ class _CartTileState extends State<CartTile> {
                   return;
                 }
                 if (!isAdded) {
-                  // Show an error if user is not part of the ride
                   return;
                 }
                 showModalBottomSheet(
@@ -242,16 +240,13 @@ class _CartTileState extends State<CartTile> {
         passengerIds.remove(loggedInUser.uid);
       } else {
         if (passengerIds.length >= widget.ride.numberOfPassengers) {
-          // Ride is full
           return;
         }
         passengerIds.add(loggedInUser.uid);
       }
 
-      isAdded = !isAdded; // Toggle the state
-      buttonIcon = isAdded ? Icons.close : Icons.add; // Update the icon
-
-      // Update in Firebase
+      isAdded = !isAdded;
+      buttonIcon = isAdded ? Icons.close : Icons.add;
       DatabaseReference ridesRef = FirebaseDatabase.instance.ref('rides');
       ridesRef.child(widget.ride.id).update({'passengerIds': passengerIds});
     });
