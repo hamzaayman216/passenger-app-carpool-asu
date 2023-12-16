@@ -85,8 +85,7 @@ class _RideListState extends State<RideList> {
     return rides.where((ride) {
       bool matchesStartPoint = ride.startPoint.toLowerCase().contains(searchStartPoint.toLowerCase());
       bool matchesEndPoint = ride.endPoint.toLowerCase().contains(searchEndPoint.toLowerCase());
-      // Implement logic to match preferences in a case-insensitive manner
-      return matchesStartPoint && matchesEndPoint; // Add preference logic here
+      return matchesStartPoint && matchesEndPoint;
     }).toList();
   }
 

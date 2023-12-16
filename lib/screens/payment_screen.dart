@@ -41,10 +41,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
           .equalTo(rideId)
           .limitToFirst(1);
 
-      // Create a completer to handle the asynchronous result
       Completer<bool> completer = Completer<bool>();
 
-      // Listen to the 'onValue' event
       query.onValue.listen((event) {
         if (event.snapshot.value == null) {
           completer.complete(false);
@@ -54,11 +52,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
           completer.complete(paid);
         }
       });
-
-      // Return the future from the completer
       return completer.future;
     } catch (e) {
-      print('Error checking payment status: $e');
       return false;
     }
   }
@@ -178,9 +173,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       if (isPassenger) {
                         DatabaseReference paidStatusRef = FirebaseDatabase.instance.ref('paidStatus');
                         String paymentMethod = card ? 'Card' : 'Cash';
-                        bool isPaid = card; // Assume if payment is by card, it's paid
+                        bool isPaid = card;
 
-                        // Query to check if an entry already exists
                         Query existingPaymentQuery = paidStatusRef.orderByChild('rideId').equalTo(widget.ride.id);
 
                         existingPaymentQuery.once().then((DatabaseEvent event) {
@@ -194,13 +188,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               }
                             }
                             if (key != null) {
-                              // Entry exists, update the existing entry
                               paidStatusRef.child(key).update({
                                 'paid': isPaid,
                                 'paymentMethod': paymentMethod,
                               });
                             } else {
-                              // Entry does not exist for this ride, add new
                               paidStatusRef.push().set({
                                 'rideId': widget.ride.id,
                                 'userId': user.uid,
@@ -209,7 +201,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               });
                             }
                           } else {
-                            // No entry exists, create a new one
                             paidStatusRef.push().set({
                               'rideId': widget.ride.id,
                               'userId': user.uid,
@@ -218,7 +209,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             });
                           }
                         }).catchError((error) {
-                          print("Failed to check existing payment status: $error");
                         });
 
                         Navigator.pop(context);

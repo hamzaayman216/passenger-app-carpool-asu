@@ -1,5 +1,7 @@
 import 'package:carpool/components/history_list.dart';
 import 'package:carpool/constants.dart';
+import 'package:carpool/controller/services/ride_services.dart';
+import 'package:carpool/controller/services/user_service.dart';
 import 'package:carpool/models/ride.dart';
 import 'package:carpool/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +11,7 @@ import 'package:flutter/material.dart';
 late User loggedInUser;
 
 class HistoryScreen extends StatefulWidget {
-  static const String id = 'driver_screen';
+  static const String id = 'history_screen';
 
   @override
   _HistoryScreenState createState() => _HistoryScreenState();
@@ -17,34 +19,22 @@ class HistoryScreen extends StatefulWidget {
 
 class _HistoryScreenState extends State<HistoryScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  UserService userService = UserService();
   CarPoolUser querySnapshot = CarPoolUser(name: '', email: '', phoneNumber: '', imageUrl: '',balance: 0);
 
   @override
   void initState() {
     super.initState();
-    getCurrentUser();
+    loggedInUser = _auth.currentUser!;
+    initUser();
   }
 
-  void getCurrentUser() async {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        DatabaseReference usersRef = FirebaseDatabase.instance.ref('users');
-        Query query = usersRef.orderByChild('email').equalTo(loggedInUser.email);
-
-        DataSnapshot snapshot = await query.get();
-        if (snapshot.exists && snapshot.value != null) {
-          Map<dynamic, dynamic>? data = snapshot.value as Map<dynamic, dynamic>?;
-          if (data != null && data.containsKey(user.uid)) {
-            var userData = data[user.uid] as Map<dynamic, dynamic>;
-            querySnapshot = CarPoolUser.fromMap(Map<String, dynamic>.from(userData));
-            setState(() {}); // Call setState to update the UI
-          }
-        }
-      }
-    } catch (e) {
-      print(e);
+  void initUser() async {
+    CarPoolUser? user = await userService.getCurrentUser();
+    if (user != null) {
+      setState(() {
+        querySnapshot = user;
+      });
     }
   }
 
@@ -67,20 +57,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             } else if (!snapshot.hasData || snapshot.data?.snapshot.value == null) {
               return Center(child: Text('No rides available', style: TextStyle(color: Colors.red, fontSize: 20)));
             } else {
-              // Extracting data from snapshot
-              var ridesMap = snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
-
-              // Converting the map to a list of Ride objects
-              List<Ride> rides = [];
-              ridesMap.forEach((key, value) {
-                if (value is Map<dynamic, dynamic>) {
-                  var rideMap = Map<String, dynamic>.from(value);
-                  var ride = Ride.fromMap(rideMap);
-                  if (ride.passengerIds!.contains(loggedInUser.uid)  &&ride.status=='Finished') { // Check for driverId instead of driver's email
-                    rides.add(ride);
-                  }
-                }
-              });
+              List<Ride> rides = RidesService().getHistoryRides(snapshot.data!, loggedInUser.uid);
 
               return HistoryList(ridesStream: Stream.fromIterable([rides]));
             }

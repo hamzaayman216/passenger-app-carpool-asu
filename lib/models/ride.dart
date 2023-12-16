@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:carpool/models/chat.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 class Ride {
   final String driverId; // Changed to driverId of type String
   final String startPoint;
@@ -62,4 +66,27 @@ class Ride {
       'status':status,
     };
   }
+}
+Stream<List<Ride>> getRidesForPassenger(User loggedInUser) {
+  StreamController<List<Ride>> controller = StreamController<List<Ride>>();
+
+  FirebaseDatabase.instance.ref('rides').onValue.listen((event) {
+    if (event.snapshot.value != null) {
+      Map<dynamic, dynamic> data = event.snapshot.value as Map<dynamic, dynamic>;
+      List<Ride> rides = [];
+      data.forEach((key, value) {
+        if (value is Map<dynamic, dynamic>) {
+          Ride ride = Ride.fromMap(Map<String, dynamic>.from(value));
+          if (ride.driverId != loggedInUser.uid && ride.status != 'Finished') {
+            rides.add(ride);
+          }
+        }
+      });
+      controller.add(rides);
+    } else {
+      controller.add(<Ride>[]);
+    }
+  });
+
+  return controller.stream;
 }

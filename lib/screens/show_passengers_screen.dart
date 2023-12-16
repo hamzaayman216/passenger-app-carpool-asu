@@ -1,11 +1,7 @@
-import 'dart:async';
-
 import 'package:carpool/constants.dart';
+import 'package:carpool/controller/services/payment_status_service.dart';
 import 'package:carpool/models/user.dart';
 import 'package:flutter/material.dart';
-import 'package:carpool/models/paid_status.dart';
-import 'package:firebase_database/firebase_database.dart';
-
 
 class ShowPassengersScreen extends StatefulWidget {
   final List<CarPoolUser> passengers;
@@ -18,46 +14,6 @@ class ShowPassengersScreen extends StatefulWidget {
 }
 
 class _ShowPassengersScreenState extends State<ShowPassengersScreen> {
-  Future<bool> getPaidStatus(String email, String rideId) async {
-    try {
-      // Fetch userId based on email from users collection (assuming it exists)
-      DatabaseReference usersRef = FirebaseDatabase.instance.ref('users');
-      Query userQuery = usersRef.orderByChild('email').equalTo(email);
-
-      String userId = '';
-      DataSnapshot userSnapshot = await userQuery.get();
-      if (userSnapshot.exists) {
-        Map<dynamic, dynamic> userData = userSnapshot.value as Map<dynamic, dynamic>;
-        userId = userData.keys.first; // Assuming email is unique and we get one result
-      }
-
-      // Now, get the PaidStatus using userId
-      DatabaseReference paidStatusRef = FirebaseDatabase.instance.ref('paidStatus');
-      Query paidStatusQuery = paidStatusRef.orderByChild('userId').equalTo(userId);
-
-      Completer<bool> completer = Completer<bool>();
-
-      paidStatusQuery.onValue.listen((event) {
-        if (event.snapshot.value == null) {
-          completer.complete(false);
-        } else {
-          Map<dynamic, dynamic> data = event.snapshot.value as Map<dynamic, dynamic>;
-          var filteredData = data.values.where((entry) => entry['rideId'] == rideId).toList();
-          if (filteredData.isNotEmpty && filteredData.first['paid'] == true) {
-            completer.complete(true);
-          } else {
-            completer.complete(false);
-          }
-        }
-      });
-
-      return completer.future;
-    } catch (e) {
-      print('Error getting paid status: $e');
-      return false;
-    }
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -84,16 +40,16 @@ class _ShowPassengersScreenState extends State<ShowPassengersScreen> {
             itemBuilder: (context, index) {
               final passenger = widget.passengers[index];
               return FutureBuilder<bool>(
-                future: getPaidStatus(passenger.email, widget.rideId),
+                future: PaymentStatusService().getPaidStatus(passenger.email, widget.rideId),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator(); // Show loading indicator while waiting for data
+                    return CircularProgressIndicator();
                   }
 
-                  bool isPaid = snapshot.data ?? false; // Default to false if no data is found
+                  bool isPaid = snapshot.data ?? false;
                   return Card(
-                    color: Colors.white, // Set card background color
-                    elevation: 4, // Add elevation to the card
+                    color: Colors.white,
+                    elevation: 4,
                     child: Column(
                       children: [
                         CircleAvatar(
@@ -104,7 +60,7 @@ class _ShowPassengersScreenState extends State<ShowPassengersScreen> {
                           title: Text(
                             passenger.name,
                             style: TextStyle(
-                                color: kSecondaryColor), // Set text color
+                                color: kSecondaryColor),
                           ),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,18 +68,18 @@ class _ShowPassengersScreenState extends State<ShowPassengersScreen> {
                               Text(
                                 'Phone: ${passenger.phoneNumber}',
                                 style: TextStyle(
-                                    color: kSecondaryColor), // Set text color
+                                    color: kSecondaryColor),
                               ),
                               Text(
                                 'Email: ${passenger.email}',
                                 style: TextStyle(
-                                    color: kSecondaryColor), // Set text color
+                                    color: kSecondaryColor),
                               ),
                             ],
                           ),
                           trailing: isPaid
                               ? Icon(Icons.check_circle, color: Colors.green)
-                              : Icon(Icons.cancel, color: Colors.red), // Display paid status
+                              : Icon(Icons.cancel, color: Colors.red),
                         ),
                       ],
                     ),

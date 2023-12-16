@@ -22,7 +22,7 @@ class _CartTileState extends State<CartTile> {
   late bool isAdded = false;
   IconData buttonIcon = Icons.add; // Default icon
   bool userHasPaid = false;
-  String driverImageUrl = 'default_image_url'; // Placeholder URL
+  String driverImageUrl = ''; // Placeholder URL
   String driverName = '';
   String driverPhoneNumber = '';
 
@@ -41,7 +41,7 @@ class _CartTileState extends State<CartTile> {
     if (event.snapshot.exists) {
       Map<String, dynamic> userData = Map<String, dynamic>.from(event.snapshot.value as Map);
       setState(() {
-        driverImageUrl = userData['imageUrl'] ?? 'default_image_url'; // Update with actual default URL if needed
+        driverImageUrl = userData['imageUrl'] ?? ''; // Update with actual default URL if needed
         driverName = userData['name'] ?? 'Unknown';
         driverPhoneNumber = userData['phoneNumber'] ?? 'N/A';
       });
@@ -113,7 +113,7 @@ class _CartTileState extends State<CartTile> {
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: Colors.white,
-          backgroundImage: NetworkImage(driverImageUrl), // Assuming driver image URL is provided in ride model
+          backgroundImage: driverImageUrl==''?AssetImage('images/avatar.jpg') as ImageProvider:NetworkImage(driverImageUrl) as ImageProvider, // Assuming driver image URL is provided in ride model
         ),
         title:Text(driverName, style: TextStyle(color: kSecondaryColor)),
         subtitle: Column(
@@ -176,7 +176,7 @@ class _CartTileState extends State<CartTile> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ChatScreen(rideId: widget.ride.id),
+                    builder: (context) => ChatScreen(rideId: widget.ride.id,loggedInUser:loggedInUser),
                   ),
                 );
               },),

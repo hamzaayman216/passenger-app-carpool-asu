@@ -5,14 +5,13 @@ import 'package:carpool/constants.dart';
 import 'package:carpool/components/message_stream.dart';
 
 final _database = FirebaseDatabase.instance.reference();
-final _auth = FirebaseAuth.instance;
-late User loggedInUser;
-
 class ChatScreen extends StatefulWidget {
-  static const String id = 'driver_chat_screen';
+  static const String id = 'chat_screen';
   final String rideId;
+  final User loggedInUser;
 
-  ChatScreen({required this.rideId});
+
+  ChatScreen({required this.rideId,required this.loggedInUser});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -25,19 +24,6 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    getCurrentUser();
-  }
-
-  void getCurrentUser() async {
-    try {
-      final user = await _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        print(loggedInUser.email);
-      }
-    } catch (e) {
-      print(e);
-    }
   }
 
   void _sendMessage() {
@@ -46,7 +32,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (messageText.isNotEmpty) {
       _database.child('rides/${widget.rideId}/chat').push().set({
         'text': messageText,
-        'sender': loggedInUser.email,
+        'sender': widget.loggedInUser.email,
         'timestamp': ServerValue.timestamp, // Add this line to include the timestamp
       });
       messageTextController.clear();
@@ -62,8 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Text('Chat',style: TextStyle(color: kSecondaryColor),),
         elevation: 20,
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: kSecondaryColor),
-      ),
+        iconTheme: IconThemeData(color: kSecondaryColor),      ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,7 +56,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: <Widget>[
             MessagesStream(
               rideId: widget.rideId,
-              loggedInUser: loggedInUser,
+              loggedInUser: widget.loggedInUser,
             ),
             Container(
               decoration: kMessageContainerDecoration,
